@@ -5,12 +5,19 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
   entry: './src/main.js',
+  resolve: {
+    extensions: ['.js', '.vue', '.json'],
+    alias: {
+      '@components': path.resolve(__dirname, 'src', 'components'),
+      '@views': path.resolve(__dirname, 'src', 'views'),
+    }
+  },
   module: {
     rules: [
-      { test: /\.js$/, use: 'babel-loader' },
+      { test: /\.js$/, use: ['babel-loader', 'eslint-loader'] },
       { test: /\.vue$/, use: 'vue-loader' },
       { test: /\.css$/, use: ['vue-style-loader', 'css-loader'] },
-    ]
+    ],
   },
   plugins: [
     new CleanWebpackPlugin(),

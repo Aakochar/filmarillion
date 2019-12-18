@@ -1,15 +1,27 @@
 <template>
   <div id="app">
-    {{ message }}
+    <router-view />
   </div>
 </template>
 
 <script>
+import api from './api/movies';
+
 export default {
-  data() {
-    return {
-      message: 'Hello World',
-    };
+  methods: {
+    async tryGetAllMovies() {
+      try {
+        const debug = await api.getAllMovies();
+
+        console.log(debug);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
+
+  async mounted() {
+    await this.tryGetAllMovies();
   },
 };
 </script>
