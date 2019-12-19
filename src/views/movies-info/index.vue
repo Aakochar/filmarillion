@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="movies-info">
     <svg
-      id="svgVisualize"
+      class="movies-info__chart"
       width="640"
       height="480"
     />
@@ -38,4 +38,9 @@ export default {
 </script>
 
 <style lang="scss">
+  .movies-info {
+    &__chart {
+      border: 1px dashed #9f9f9f;
+    }
+  }
 </style>
