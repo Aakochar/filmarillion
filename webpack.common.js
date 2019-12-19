@@ -9,8 +9,9 @@ module.exports = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       '@components': path.resolve(__dirname, 'src', 'components'),
+      '@api': path.resolve(__dirname, 'src', 'api'),
       '@views': path.resolve(__dirname, 'src', 'views'),
-    }
+    },
   },
   module: {
     rules: [
