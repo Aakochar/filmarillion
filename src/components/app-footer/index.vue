@@ -1,5 +1,6 @@
-<template>
-  <footer class="footer">This is app footer</footer>
+<template lang="pug">
+  footer.footer
+    a(href="https://github.com/Aakochar/filmarillion") Github page
 </template>
 
 <script>

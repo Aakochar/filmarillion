@@ -19,7 +19,7 @@ module.exports = {
     ],
     "dot-location": [
       "error",
-      "object"
+      "property"
     ],
     "dot-notation": "error",
     "eqeqeq": [
@@ -41,10 +41,6 @@ module.exports = {
     "no-implicit-globals": "error",
     "no-loop-func": "error",
     "no-lone-blocks": "error",
-    "no-magic-numbers": [
-      "error",
-      { "ignore": [1] }
-    ],
     "no-multi-str": "error",
     "no-multi-spaces": "error",
     "no-new": "error",

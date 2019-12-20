@@ -10,6 +10,7 @@ module.exports = {
     alias: {
       '@components': path.resolve(__dirname, 'src', 'components'),
       '@api': path.resolve(__dirname, 'src', 'api'),
+      '@lib': path.resolve(__dirname, 'src', 'lib'),
       '@views': path.resolve(__dirname, 'src', 'views'),
     },
   },
@@ -17,6 +18,7 @@ module.exports = {
     rules: [
       { test: /\.js$/, use: ['babel-loader', 'eslint-loader'] },
       { test: /\.vue$/, use: 'vue-loader' },
+      { test: /\.pug$/, use: 'pug-plain-loader' },
       { test: /\.css$/, use: ['vue-style-loader', 'css-loader'] },
       { test: /\.scss$/, use: ['vue-style-loader', 'css-loader', 'sass-loader'] },
     ],
