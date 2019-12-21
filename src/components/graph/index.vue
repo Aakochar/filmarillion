@@ -5,36 +5,34 @@
     :height="presenter.height"
   )
     g.renderer__nodes
-      template(v-for="node in presenter.nodes")
-        g
+      template(v-for="node in d3Nodes")
+        g(@click.stop='onNodeClick(node)')
           circle(
             :key="node.innerId"
             :r="node.r"
             :color="node.color"
             fill="currentColor"
-            @click.stop='onNodeClick(node)'
             :cx="node.x"
             :cy="node.y"
             :title="node.name"
+            color="#A9D8B8"
             v-bind='node.attrs'
           )
           text.renderer__label(
-            style="fill:wheat;"
-            x="50%"
-            y="50%"
             text-anchor="middle"
+            :x="node.x"
+            :y="node.y"
           ) {{ node.label }}
 </template>
 
 <script>
-import Presenter from './services/Presenter';
 import * as forceSimulation from 'd3-force';
 
 const d3 = Object.assign({}, forceSimulation);
 
-export default {
-  presenter: new Presenter(),
+const D3_STRENGTH = -10;
 
+export default {
   name: 'Renderer',
 
   props: {
@@ -52,6 +50,7 @@ export default {
   data() {
     return {
       simulation: undefined,
+      d3Nodes: undefined,
     };
   },
 
@@ -60,19 +59,22 @@ export default {
      * @returns {object}
      */
     presenter() {
-      return this.$options.presenter.create(this.nodes, this.size);
+      return {
+        width: this.size.width,
+        height: this.size.height,
+      };
     },
 
     center() {
       return {
         x: this.size.width / 2,
         y: this.size.height / 2,
-      }
+      };
     },
   },
 
   created() {
-    this.buildNodes();
+    this.setD3Nodes();
   },
 
   mounted() {
@@ -85,26 +87,27 @@ export default {
     },
 
     simulate() {
-      this.simulation = d3.forceSimulation(this.nodes)
-        .force('charge', d3.forceManyBody().strength(() => 20))
-        .force('x', d3.forceX())
-        .force('y', d3.forceY())
+      this.simulation = d3
+        .forceSimulation(this.d3Nodes)
+        .force('charge', d3.forceManyBody().strength(() => D3_STRENGTH))
+        .force('collide', d3.forceCollide().radius(node => node.r))
         .force('center', d3.forceCenter(this.center.x, this.center.y));
     },
 
-    animate () {
+    animate() {
       if (this.simulation) {
         this.simulation.stop();
-      } else { 
+      } else {
         this.simulate();
       }
 
-      this.simulation.restart()
+      this.simulation.restart();
     },
 
-    buildNodes() {
-      this.nodes.forEach((node, index) => {
-        if (!node.id && node.id !== 0) { 
+    setD3Nodes() {
+      this.d3Nodes = [...this.nodes];
+      this.d3Nodes.forEach((node, index) => {
+        if (!node.id && node.id !== 0) {
           this.$set(node, 'id', index);
         }
 
@@ -119,11 +122,18 @@ export default {
         if (!node.name && node.name !== '0') {
           this.$set(node, 'name', `node ${node.id}`);
         }
-      })
+      });
     },
   },
 };
 </script>
 
 <style lang="scss">
+.renderer {
+  &__label {
+    cursor: default;
+    fill: #72705B;
+    font: bold 14px sans-serif;
+  }
+}
 </style>

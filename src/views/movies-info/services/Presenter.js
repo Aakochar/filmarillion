@@ -12,7 +12,7 @@ export const DECADES = {
   yy90s: '1990s',
   yy00s: '2000s',
   yy10s: '2010s',
-}
+};
 
 const DECADE_YEARS_MAP = {
   [DECADES.yy20s]: { from: 1920, to: 1929 },
@@ -26,6 +26,9 @@ const DECADE_YEARS_MAP = {
   [DECADES.yy00s]: { from: 2000, to: 2009 },
   [DECADES.yy10s]: { from: 2010, to: 2019 },
 };
+
+const MULTIPLIER = 4;
+const NODE_DEFAULT_SIZE = 10;
 
 export default class Presenter {
   create(movies, decade, width, height) {
@@ -60,8 +63,8 @@ export default class Presenter {
   }
 
   /**
-   * @param {object[]} movies 
-   * @param {string} decade 
+   * @param {object[]} movies
+   * @param {string} decade
    */
   _createNodesByMode(movies, decade) {
     let result;
@@ -76,20 +79,23 @@ export default class Presenter {
   }
 
   /**
-   * @param {object[]} movies 
-   * @param {string} decade 
+   * @param {object[]} movies
+   * @param {string} decade
    */
   _createMovieNodes(movie, decade) {
-    const filteredMovies = this._filterMoviesByDecade(movie, decade)
+    const filteredMovies = this._filterMoviesByDecade(movie, decade);
+    const size = this._getNodeSize();
+    const radius = size / 2;
 
     return filteredMovies.map(item => ({
+      r: radius,
       label: item.Title,
       year: item.Year,
     }));
   }
 
   /**
-   * @param {object[]} movies 
+   * @param {object[]} movies
    * @param {string} decade
    * @param {{ from: number, to: number }} [interval]
    */
@@ -108,7 +114,7 @@ export default class Presenter {
   }
 
   /**
-   * @param {object[]} movies 
+   * @param {object[]} movies
    */
   _createDecadeNodes(movies) {
     const result = [];
@@ -116,13 +122,24 @@ export default class Presenter {
     for (const [decade, interval] of Object.entries(DECADE_YEARS_MAP)) {
       const decadeMovies = this._filterMoviesByDecade(movies, decade, interval);
 
+      const size = this._getNodeSize(decadeMovies.length);
+      const radius = size / 2;
+
       result.push({
         decade,
+        r: radius,
         label: decade,
-        size: decadeMovies.length,
-      })
+      });
     }
 
     return result;
+  }
+
+  /**
+   * @param {number} node
+   * @private
+   */
+  _getNodeSize(size) {
+    return (size || NODE_DEFAULT_SIZE) * MULTIPLIER;
   }
 }
