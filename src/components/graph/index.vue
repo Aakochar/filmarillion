@@ -89,9 +89,10 @@ export default {
     simulate() {
       this.simulation = d3
         .forceSimulation(this.d3Nodes)
-        .force('charge', d3.forceManyBody().strength(() => D3_STRENGTH))
-        .force('collide', d3.forceCollide().radius(node => node.r))
-        .force('center', d3.forceCenter(this.center.x, this.center.y));
+        .force('charge', d3.forceManyBody().strength(-1000))
+        .force('collide', d3.forceCollide().radius(node => node.r + 5))
+        .force('x', d3.forceX(this.center.x).strength(0.4))
+        .force('y', d3.forceY(this.center.y).strength(0.6));
     },
 
     animate() {
@@ -132,7 +133,7 @@ export default {
 .renderer {
   &__label {
     cursor: default;
-    fill: #72705B;
+    fill: #72705b;
     font: bold 14px sans-serif;
   }
 }
