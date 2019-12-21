@@ -6,6 +6,7 @@
       graph.movies-info__chart(
         :size="presenter.size"
         :nodes="presenter.nodes"
+        :mode="presenter.mode"
         @node:click="onNodeClick"
       )
 </template>
@@ -46,7 +47,6 @@ export default {
     },
 
     onNodeClick(node) {
-      console.log(node.decade);
       this.switchMode(node);
     },
 

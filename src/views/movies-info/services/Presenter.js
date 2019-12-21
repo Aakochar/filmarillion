@@ -28,7 +28,7 @@ const DECADE_YEARS_MAP = {
 };
 
 const MULTIPLIER = 4;
-const NODE_DEFAULT_SIZE = 10;
+const NODE_DEFAULT_SIZE = 30;
 
 export default class Presenter {
   create(movies, decade, width, height) {
@@ -58,6 +58,7 @@ export default class Presenter {
         height,
       },
       nodes: this._createNodesByMode(movies, decade),
+      mode: decade,
       isEmpty: !movies.length,
     };
   }
@@ -83,7 +84,8 @@ export default class Presenter {
    * @param {string} decade
    */
   _createMovieNodes(movie, decade) {
-    const filteredMovies = this._filterMoviesByDecade(movie, decade);
+    const interval = DECADE_YEARS_MAP[decade];
+    const filteredMovies = this._filterMoviesByDecade(movie, interval);
     const size = this._getNodeSize();
     const radius = size / 2;
 
@@ -96,10 +98,9 @@ export default class Presenter {
 
   /**
    * @param {object[]} movies
-   * @param {string} decade
    * @param {{ from: number, to: number }} [interval]
    */
-  _filterMoviesByDecade(movies, decade, interval) {
+  _filterMoviesByDecade(movies, interval) {
     let result;
 
     if (!interval) {
@@ -120,7 +121,7 @@ export default class Presenter {
     const result = [];
 
     for (const [decade, interval] of Object.entries(DECADE_YEARS_MAP)) {
-      const decadeMovies = this._filterMoviesByDecade(movies, decade, interval);
+      const decadeMovies = this._filterMoviesByDecade(movies, interval);
 
       const size = this._getNodeSize(decadeMovies.length);
       const radius = size / 2;

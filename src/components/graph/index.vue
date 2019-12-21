@@ -30,8 +30,6 @@ import * as forceSimulation from 'd3-force';
 
 const d3 = Object.assign({}, forceSimulation);
 
-const D3_STRENGTH = -10;
-
 export default {
   name: 'Renderer',
 
@@ -45,11 +43,18 @@ export default {
       type: Array,
       required: true,
     },
+
+    mode: {
+      type: String,
+      required: true,
+    },
   },
 
   data() {
     return {
       simulation: undefined,
+      // adding d3 nodes in presenter breaks reactivity
+      // should consider better solution
       d3Nodes: undefined,
     };
   },
@@ -73,6 +78,12 @@ export default {
     },
   },
 
+  watch: {
+    mode() {
+      this.setD3Nodes();
+    },
+  },
+
   created() {
     this.setD3Nodes();
   },
@@ -89,10 +100,10 @@ export default {
     simulate() {
       this.simulation = d3
         .forceSimulation(this.d3Nodes)
-        .force('charge', d3.forceManyBody().strength(-1000))
-        .force('collide', d3.forceCollide().radius(node => node.r + 5))
-        .force('x', d3.forceX(this.center.x).strength(0.4))
-        .force('y', d3.forceY(this.center.y).strength(0.6));
+        .force('charge', d3.forceManyBody().strength(-50))
+        .force('collide', d3.forceCollide().radius(node => node.r + 4))
+        .force('x', d3.forceX(this.center.x).strength(0.3))
+        .force('y', d3.forceY(this.center.y).strength(0.5));
     },
 
     animate() {
@@ -124,6 +135,12 @@ export default {
           this.$set(node, 'name', `node ${node.id}`);
         }
       });
+
+      if (this.simulation) {
+        this.simulation.nodes(this.d3Nodes).alpha(0.5);
+
+        this.simulation.restart();
+      }
     },
   },
 };
@@ -134,7 +151,8 @@ export default {
   &__label {
     cursor: default;
     fill: #72705b;
-    font: bold 14px sans-serif;
+    font-size: 14px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   }
 }
 </style>

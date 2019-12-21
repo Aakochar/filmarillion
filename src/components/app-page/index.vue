@@ -21,4 +21,21 @@ export default {
 </script>
 
 <style lang="scss">
+.header {
+  &__text {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-transform: uppercase;
+    margin: 0 5px;
+  }
+}
+
+.note {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 14px;
+  margin: 0 5px;
+
+  &_warning {
+    color: #db9a0d;
+  }
+}
 </style>

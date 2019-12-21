@@ -24,3 +24,4 @@ If user clicks on bubble, chart shows second level - bubbles with movie names (s
 - Make it work with [Studio Ghibli Public API](https://ghibliapi.herokuapp.com/)
 - Add possibility to switch to canvas renderer (as in vue-d3-network)
 - Add resizeability
+- Add drag-n-drop behavior
